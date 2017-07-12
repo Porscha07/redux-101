@@ -5,18 +5,24 @@ import App from './App';
 //container-a component that knows about redux state.
 
 //go get the createStore method from the redux module
-import { createStore} from 'redux';
+//we also need applyMiddlware from redux if we re going to use middleware.
+import { createStore, applyMiddleware} from 'redux';
 //import the Provider from react-redux so react and redux can talk.
-//
+import reduxPromise from 'redux-promise';
 import { Provider} from 'react-redux';
 //import root reducer(index.js) so we can give it to the store...fill those shelves!!!
 import reducers from './reducers/index';
 // import weatherdata Component
 
-
+//least confusion? 3lines..
+// const middleware = 
+// const storePrep =
+// const theStore =
 
 const theStore = createStore(reducers);
 console.log(theStore)
+const createStoreWithMiddleWare = applyMiddleware(reduxPromise)(createStore)(reducers)
+// Const theFinalStore = createStoreWithMiddleWare(RootReducer)
 //reactdom.render takes 2 args(1. what, 2. where)
 //provider-react (what)store- redux root-where
 //store is a prop thats available to all children

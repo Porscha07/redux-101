@@ -1,32 +1,42 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
+import {bindActionCreators} from 'redux';
+import fetchWeather from '../actions/fetchWeather';
+import  {connect} from 'react-redux';
 class WeatherData extends Component {
   constructor(props) {
     super(props);
-    
-    this.state = {
-      weatherData: []
-    }
+    // this.state = {
+    //   weatherData: []
+    // }
   }
+
   componentDidMount() {
-    const weatherURL = 'http://api.openweathermap.org/data/2.5/weather?units=imperial&zip=30324&appid=e312dbeb8840e51f92334498a261ca1d'
-    $.getJSON(weatherURL, (weatherData)=>{
-      this.setState({
-        weatherData: weatherData
-      })
-      console.log(weatherData)
-    })
+    this.props.fetchWeather()
   }
   render() {
-    if(this.state.weatherData.main == undefined){
+    if(this.props.weatherData.main == undefined){
       return (<h1>Loading...</h1>)
     }
     return(
       <div>
        <h3>Atlanta Weather</h3>
-        {this.state.weatherData.main.temp}
+        &deg;{this.props.weatherData.main.temp}
       </div>
     )
   }
 }
-export default WeatherData;
+
+function mapStateToProps(state){
+  return{
+    weatherData: state.weather
+  }
+}
+ function mapDispatchToProps(dispatch){
+  return bindActionCreators({
+    fetchWeather: fetchWeather
+  }, dispatch)
+}
+
+var thingCreatedByConnectThatKnowsAboutCompononetAndReduxStuff = connect (mapStateToProps, mapDispatchToProps) (WeatherData);
+export default thingCreatedByConnectThatKnowsAboutCompononetAndReduxStuff
